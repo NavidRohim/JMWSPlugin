@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'me.brynview.navidrohim'
-version = '0.0.1-alpha.2'
+version = jmws_version
 
 repositories {
     mavenCentral()
@@ -59,7 +59,11 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [
+            version: version,
+            jmws_version: jmws_version,
+            jmws_description: jmws_description
+    ]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {

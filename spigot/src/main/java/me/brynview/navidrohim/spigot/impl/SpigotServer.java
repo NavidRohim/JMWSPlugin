@@ -1,13 +1,11 @@
-package me.brynview.navidrohim.JMWSSpigot.impl;
+package me.brynview.navidrohim.spigot.impl;
 
-import me.brynview.navidrohim.JMWSSpigot.JMWSSpigot;
+import me.brynview.navidrohim.spigot.JMWSSpigot;
 import me.brynview.navidrohim.common.api.PacketFlow;
 import me.brynview.navidrohim.common.api.WSPlayer;
 import me.brynview.navidrohim.common.api.WSServer;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
-import me.brynview.navidrohim.common.network.packets.HandshakePacket;
 import org.bukkit.Server;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.Messenger;
 import org.jetbrains.annotations.Nullable;
 

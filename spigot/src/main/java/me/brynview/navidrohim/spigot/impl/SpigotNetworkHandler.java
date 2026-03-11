@@ -1,12 +1,9 @@
-package me.brynview.navidrohim.JMWSSpigot.impl;
+package me.brynview.navidrohim.spigot.impl;
 
-import me.brynview.navidrohim.JMWSSpigot.JMWSSpigot;
-import me.brynview.navidrohim.common.Constants;
+import me.brynview.navidrohim.spigot.JMWSSpigot;
 import me.brynview.navidrohim.common.api.WSPacket;
 import me.brynview.navidrohim.common.api.WSPlayer;
 import me.brynview.navidrohim.common.api.WSNetworkHandler;
-import me.brynview.navidrohim.common.network.packets.ActionPacket;
-import me.brynview.navidrohim.common.network.packets.HandshakePacket;
 import org.bukkit.entity.Player;
 
 public class SpigotNetworkHandler implements WSNetworkHandler {

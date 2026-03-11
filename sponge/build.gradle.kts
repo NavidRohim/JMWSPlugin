@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "me.brynview.navidrohim"
-version = "0.0.1-alpha.2"
+version = "1.2.3-1.21.11-alpha.2"
 
 repositories {
     mavenCentral()
@@ -29,10 +29,10 @@ sponge {
         name(PluginLoaders.JAVA_PLAIN)
         version("1.0")
     }
-    plugin("jmwsponge") {
+    plugin("jmws") {
         displayName("JMWS")
         entrypoint("me.brynview.navidrohim.sponge.JMWSSponge")
-        description("texst")
+        description("This plugin allows you to save waypoints on JourneyMap between multiple devices via the player/account UUID on the server.")
         links {
             homepage("https://spongepowered.org")
             source("https://spongepowered.org/source")

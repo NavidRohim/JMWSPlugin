@@ -32,7 +32,7 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
  *
  * <p>All methods are optional -- some common event registrations are included as a jumping-off point.</p>
  */
-@Plugin("jmwsponge")
+@Plugin("jmws")
 public class JMWSSponge {
 
     private final PluginContainer container;

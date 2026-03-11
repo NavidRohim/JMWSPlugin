@@ -1,12 +1,12 @@
-package me.brynview.navidrohim.JMWSSpigot;
+package me.brynview.navidrohim.spigot;
 
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPISpigotConfig;
-import me.brynview.navidrohim.JMWSSpigot.commands.SharingCommands;
-import me.brynview.navidrohim.JMWSSpigot.events.JMWSEvents;
-import me.brynview.navidrohim.JMWSSpigot.impl.SpigotPlayer;
-import me.brynview.navidrohim.JMWSSpigot.impl.SpigotServer;
+import me.brynview.navidrohim.spigot.commands.SharingCommands;
+import me.brynview.navidrohim.spigot.events.JMWSEvents;
+import me.brynview.navidrohim.spigot.impl.SpigotPlayer;
+import me.brynview.navidrohim.spigot.impl.SpigotServer;
 import me.brynview.navidrohim.common.CommonClass;
 
 import me.brynview.navidrohim.common.network.packets.ActionPacket;

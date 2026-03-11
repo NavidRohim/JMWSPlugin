@@ -1,4 +1,4 @@
-package me.brynview.navidrohim.JMWSSpigot.commands;
+package me.brynview.navidrohim.spigot.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;

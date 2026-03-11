@@ -1,4 +1,5 @@
-name: JMWSSpigot
-version: '0.0.1-alpha.2'
-main: me.brynview.navidrohim.JMWSSpigot.JMWSSpigot
+name: JMWS
+version: ${jmws_version}
+main: me.brynview.navidrohim.spigot.JMWSSpigot
 api-version: '1.21.11'
+description: "${jmws_description}"
