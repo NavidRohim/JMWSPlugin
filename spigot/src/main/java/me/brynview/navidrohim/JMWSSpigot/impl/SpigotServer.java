@@ -1,10 +1,14 @@
 package me.brynview.navidrohim.JMWSSpigot.impl;
 
+import me.brynview.navidrohim.JMWSSpigot.JMWSSpigot;
+import me.brynview.navidrohim.common.api.PacketFlow;
 import me.brynview.navidrohim.common.api.WSPlayer;
 import me.brynview.navidrohim.common.api.WSServer;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
+import me.brynview.navidrohim.common.network.packets.HandshakePacket;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.messaging.Messenger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -36,6 +40,21 @@ public class SpigotServer implements WSServer {
     {
         SpigotPlayer player = this.getWSPlayer(uuid);
         new ActionPacket(packetEncodable, player).send();
+    }
+
+    @Override
+    public void registerPacket(PacketFlow direction, String channel)
+    {
+        JMWSSpigot plugin = JMWSSpigot.getPluginInstance();
+        Messenger messenger = JMWSSpigot.server.getNativeServer().getMessenger();
+
+        if (direction == PacketFlow.OUTGOING)
+        {
+            messenger.registerOutgoingPluginChannel(plugin, channel);
+        } else if  (direction == PacketFlow.INCOMING)
+        {
+            messenger.registerIncomingPluginChannel(plugin, channel, plugin);
+        }
     }
 
     @Override

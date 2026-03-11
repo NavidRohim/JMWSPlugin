@@ -133,7 +133,9 @@ public class ServerPacketHandler {
         }
     }
 
-    public static void handleIncomingActionCommand(ActionPacket packet, @Nullable WSPlayer player) {
+    public static void handleIncomingActionCommand(ActionPacket packet) {
+
+        WSPlayer player = packet.player;
 
         if (player == null)
         {

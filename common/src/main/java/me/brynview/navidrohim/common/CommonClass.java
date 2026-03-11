@@ -2,8 +2,10 @@ package me.brynview.navidrohim.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.brynview.navidrohim.common.api.PacketFlow;
 import me.brynview.navidrohim.common.api.WSServer;
 import me.brynview.navidrohim.common.config.ServerConfig;
+import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.common.network.packets.HandshakePacket;
 
 import java.io.File;
@@ -28,11 +30,19 @@ public class CommonClass {
 
 
     public static void init(WSServer serverInstance) {
+
         Constants.getLogger().info("Creating server resources..");
-        ServerConfig.ensureExistence();
-        _createServerResources();
+        ServerConfig.ensureExistence(); // Create config
+        _createServerResources(); // jmws folders
 
         CommonClass.server = serverInstance;
+
+        // register packets
+        serverInstance.registerPacket(PacketFlow.OUTGOING, HandshakePacket.CHANNEL);
+        serverInstance.registerPacket(PacketFlow.OUTGOING, ActionPacket.CHANNEL);
+        serverInstance.registerPacket(PacketFlow.INCOMING, ActionPacket.CHANNEL);
+
+
         // It is common for all supported loaders to provide a similar feature that can not be used directly in the
         // common code. A popular way to get around this is using Java's built-in service loader feature to create
         // your own abstraction layer. You can learn more about this in our provided services class. In this example

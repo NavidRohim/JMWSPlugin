@@ -1,12 +1,17 @@
 package me.brynview.navidrohim.sponge.impl;
 
+import me.brynview.navidrohim.common.api.PacketFlow;
 import me.brynview.navidrohim.common.api.WSPlayer;
 import me.brynview.navidrohim.common.api.WSServer;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.sponge.JMWSSponge;
+import me.brynview.navidrohim.sponge.MessageHandler;
+import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
+import org.spongepowered.api.network.EngineConnectionState;
+import org.spongepowered.api.network.channel.raw.RawDataChannel;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -50,6 +55,18 @@ public class SpongeServer implements WSServer {
         } else {
             throw new RuntimeException("Server %s player not found.".formatted(uuid));
         }
+    }
+
+    @Override
+    public void registerPacket(PacketFlow direction, String channel)
+    {
+        String[] key = channel.split(":");
+        ResourceKey channelID = ResourceKey.of(key[0], key[1]);
+        if (Sponge.channelManager().get(channelID).isEmpty())
+        {
+            Sponge.channelManager().ofType(ResourceKey.of(key[0], key[1]), RawDataChannel.class).play().addHandler(EngineConnectionState.Game.class, new MessageHandler(channel));
+        }
+
     }
 
     @Override

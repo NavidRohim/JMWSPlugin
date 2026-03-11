@@ -2,17 +2,15 @@ package me.brynview.navidrohim.JMWSSpigot;
 
 
 import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkit;
-import dev.jorel.commandapi.CommandAPIConfig;
 import dev.jorel.commandapi.CommandAPISpigotConfig;
 import me.brynview.navidrohim.JMWSSpigot.commands.SharingCommands;
 import me.brynview.navidrohim.JMWSSpigot.events.JMWSEvents;
 import me.brynview.navidrohim.JMWSSpigot.impl.SpigotPlayer;
 import me.brynview.navidrohim.JMWSSpigot.impl.SpigotServer;
 import me.brynview.navidrohim.common.CommonClass;
-import me.brynview.navidrohim.common.Constants;
+
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
-import me.brynview.navidrohim.common.network.packets.HandshakePacket;
+
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,16 +40,9 @@ public final class JMWSSpigot extends JavaPlugin implements PluginMessageListene
         JMWSSpigot.plugin = this;
 
         CommonClass.init(JMWSSpigot.server);
-        this.registerNetworkChannels();
-
     }
 
-    private void registerNetworkChannels()
-    {
-        server.getNativeServer().getMessenger().registerOutgoingPluginChannel(this, HandshakePacket.CHANNEL);
-        server.getNativeServer().getMessenger().registerOutgoingPluginChannel(this, ActionPacket.CHANNEL);
-        server.getNativeServer().getMessenger().registerIncomingPluginChannel(this, ActionPacket.CHANNEL, this);
-    }
+
 
     @Override
     public void onDisable() {

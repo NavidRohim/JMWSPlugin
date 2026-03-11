@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import me.brynview.navidrohim.common.CommonClass;
 import me.brynview.navidrohim.common.Constants;
 import me.brynview.navidrohim.common.events.CommonEvents;
+import me.brynview.navidrohim.common.network.ServerPacketHandler;
+import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.sponge.impl.SpongePlayer;
 import me.brynview.navidrohim.sponge.impl.SpongeServer;
 import net.kyori.adventure.identity.Identity;
@@ -37,18 +39,23 @@ public class JMWSSponge {
     private final Logger logger;
     private static Server serverObj;
     public static SpongeServer commonServer;
+    private static JMWSSponge instance;
 
     @Inject
     JMWSSponge(final PluginContainer container) {
         this.container = container;
         this.logger = Constants.getLogger();
+        instance = this;
     }
 
     public static Server getServer()
     {
         return serverObj;
     }
-
+    public static JMWSSponge getPlugin()
+    {
+        return instance;
+    }
     @Listener
     public void onConstructPlugin(final ConstructPluginEvent event) {
         // Perform any one-time setup
@@ -96,5 +103,13 @@ public class JMWSSponge {
                 return CommandResult.success();
             })
             .build(), "greet", "wave");
+    }
+
+    public void onPluginMessage(String channel, SpongePlayer spongePlayer, byte[] bytes) {
+        Constants.getLogger().info(channel);
+        Constants.getLogger().info(ActionPacket.CHANNEL);
+        if (channel.equalsIgnoreCase(ActionPacket.CHANNEL)) {
+            new ActionPacket(bytes, spongePlayer).process();
+        }
     }
 }

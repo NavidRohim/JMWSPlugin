@@ -60,7 +60,7 @@ public final class ActionPacket implements WSPacket {
 
     public void process()
     {
-        ServerPacketHandler.handleIncomingActionCommand(this, this.player);
+        ServerPacketHandler.handleIncomingActionCommand(this);
     }
 
     @Override
@@ -80,7 +80,6 @@ public final class ActionPacket implements WSPacket {
     {
         return this.player;
     }
-
 
     public String getChannel()
     {
