@@ -3,8 +3,9 @@ package me.brynview.navidrohim.spigot;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPISpigotConfig;
+import me.brynview.navidrohim.common.events.CommonEvents;
 import me.brynview.navidrohim.spigot.commands.SharingCommands;
-import me.brynview.navidrohim.spigot.events.JMWSEvents;
+import me.brynview.navidrohim.spigot.impl.SpigotCommandRegistry;
 import me.brynview.navidrohim.spigot.impl.SpigotPlayer;
 import me.brynview.navidrohim.spigot.impl.SpigotServer;
 import me.brynview.navidrohim.common.CommonClass;
@@ -13,6 +14,9 @@ import me.brynview.navidrohim.common.network.packets.ActionPacket;
 
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jspecify.annotations.NonNull;
@@ -21,14 +25,22 @@ public final class JMWSSpigot extends JavaPlugin implements PluginMessageListene
 
     public static SpigotServer server;
     public static JMWSSpigot plugin;
+    public static SpigotCommandRegistry spigotCommandRegistry = new SpigotCommandRegistry();
+
+    // Class that gets events, moved to inner-class because there is only one event we are about.
+    public static class JMWSEvents implements Listener {
+        @EventHandler
+        public void onPlayerJoin(PlayerJoinEvent event)
+        {
+            CommonEvents.handleJoin(new SpigotPlayer(event.getPlayer()));
+        }
+    }
 
     @Override
     public void onLoad() {
 
         CommandAPI.onLoad(new CommandAPISpigotConfig(this));
-
-        SharingCommands.register();
-        SharingCommands.registerAdmin();
+        spigotCommandRegistry.register();
     }
 
     @Override
@@ -38,7 +50,6 @@ public final class JMWSSpigot extends JavaPlugin implements PluginMessageListene
         getServer().getPluginManager().registerEvents(new JMWSEvents(), this);
         JMWSSpigot.server = new SpigotServer(getServer());
         JMWSSpigot.plugin = this;
-
         CommonClass.init(JMWSSpigot.server);
     }
 

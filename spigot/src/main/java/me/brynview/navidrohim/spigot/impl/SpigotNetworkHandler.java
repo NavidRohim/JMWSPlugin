@@ -1,9 +1,9 @@
 package me.brynview.navidrohim.spigot.impl;
 
 import me.brynview.navidrohim.spigot.JMWSSpigot;
-import me.brynview.navidrohim.common.api.WSPacket;
-import me.brynview.navidrohim.common.api.WSPlayer;
-import me.brynview.navidrohim.common.api.WSNetworkHandler;
+import me.brynview.navidrohim.common.api.network.WSPacket;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
+import me.brynview.navidrohim.common.api.network.WSNetworkHandler;
 import org.bukkit.entity.Player;
 
 public class SpigotNetworkHandler implements WSNetworkHandler {
@@ -16,7 +16,6 @@ public class SpigotNetworkHandler implements WSNetworkHandler {
     {
         this.networkOwner = networkOwner;
         this.player = owner;
-
     }
 
     @Override

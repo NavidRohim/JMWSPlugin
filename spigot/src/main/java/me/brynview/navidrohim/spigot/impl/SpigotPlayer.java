@@ -1,23 +1,31 @@
 package me.brynview.navidrohim.spigot.impl;
 
+import me.brynview.navidrohim.common.CommonClass;
+import me.brynview.navidrohim.common.api.command.ArgumentCasterRegistry;
 import me.brynview.navidrohim.spigot.JMWSSpigot;
-import me.brynview.navidrohim.common.api.WSPlayer;
-import me.brynview.navidrohim.common.api.WSNetworkHandler;
-import me.brynview.navidrohim.common.api.WSServer;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
+import me.brynview.navidrohim.common.api.network.WSNetworkHandler;
+import me.brynview.navidrohim.common.api.server.WSServer;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.profile.PlayerProfile;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class SpigotPlayer implements WSPlayer
 {
+    static {
+        ArgumentCasterRegistry.register(SpigotPlayer.class, SpigotPlayer::cast);
+    }
+
     private final Player nativePayerObj;
     private final SpigotServer server;
 
     private final SpigotNetworkHandler spigotNetworkHandler;
 
-    public SpigotPlayer(Player nativePlayerObj)
+    public SpigotPlayer(@Nullable Player nativePlayerObj)
     {
         this.server = JMWSSpigot.server;
         this.nativePayerObj = nativePlayerObj;
@@ -59,5 +67,13 @@ public class SpigotPlayer implements WSPlayer
     @Override
     public void sendActionCommand(ActionPacket command) {
         this.getNetworkHandler().sendPacket(command.getChannel(), command.encode());
+    }
+
+    public static WSPlayer cast(Object value) {
+        if (value instanceof PlayerProfile) {
+            PlayerProfile profile = (PlayerProfile) value;
+            return CommonClass.server.getWSPlayer(profile.getUniqueId());
+        }
+        throw new RuntimeException("SpigotPlayer cast only can be cast from PlayerProfile");
     }
 }

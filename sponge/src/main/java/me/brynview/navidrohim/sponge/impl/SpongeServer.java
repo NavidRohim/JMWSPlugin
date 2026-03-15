@@ -1,11 +1,11 @@
 package me.brynview.navidrohim.sponge.impl;
 
-import me.brynview.navidrohim.common.api.PacketFlow;
-import me.brynview.navidrohim.common.api.WSPlayer;
-import me.brynview.navidrohim.common.api.WSServer;
+import me.brynview.navidrohim.common.api.network.PacketFlow;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
+import me.brynview.navidrohim.common.api.server.WSServer;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.sponge.JMWSSponge;
-import me.brynview.navidrohim.sponge.MessageHandler;
+import me.brynview.navidrohim.sponge.network.MessageHandler;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;

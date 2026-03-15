@@ -1,6 +1,6 @@
-package me.brynview.navidrohim.common.api;
+package me.brynview.navidrohim.common.api.network;
 
-import me.brynview.navidrohim.common.network.packets.ActionPacket;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
 
 public interface WSNetworkHandler {
     WSPlayer getNetworkOwner();

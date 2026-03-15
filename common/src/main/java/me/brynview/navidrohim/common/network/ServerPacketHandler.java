@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.brynview.navidrohim.common.Constants;
-import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
 import me.brynview.navidrohim.common.config.ServerConfig;
 import me.brynview.navidrohim.common.enums.JMWSMessageType;
 import me.brynview.navidrohim.common.enums.ObjectType;

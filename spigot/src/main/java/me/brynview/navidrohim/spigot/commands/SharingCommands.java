@@ -1,11 +1,9 @@
 package me.brynview.navidrohim.spigot.commands;
 
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.*;
 import dev.jorel.commandapi.executors.CommandArguments;
 import me.brynview.navidrohim.common.CommonClass;
-import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
 import me.brynview.navidrohim.common.commands.ServerCommands;
 import me.brynview.navidrohim.common.commands.SuggestionProvider;
 import me.brynview.navidrohim.common.enums.ObjectType;
@@ -13,73 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.profile.PlayerProfile;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SharingCommands {
-
-    private static final List<Command> commands = List.of(
-            new Command(
-                    "share_waypoint",
-                    SharingCommands::doWpShareArgPrep,
-                    new PlayerProfileArgument("username"),
-                    SharingCommands.waypointArgument()
-            ),
-            new Command(
-                    "share_group",
-                    SharingCommands::doGpShareArgPrep,
-                    new PlayerProfileArgument("username"),
-                    SharingCommands.groupArgument()
-            ),
-            new Command(
-                    "stop_sharing_group",
-                    SharingCommands::stopSharingGp,
-                    SharingCommands.sharedGroupArgument()
-            ),
-            new Command(
-                    "stop_sharing_waypoint",
-                    SharingCommands::stopSharingWp,
-                    SharingCommands.sharedWaypointArgument()
-            )
-    );
-
-    private static final List<Command> adminCommands = List.of(
-            new Command(
-                    "create_global_waypoint",
-                    SharingCommands::createServerWp,
-                    SharingCommands.waypointArgument()
-            ),
-            new Command(
-                    "create_global_group",
-                    SharingCommands::createServerGp,
-                    SharingCommands.groupArgument()
-            ),
-            new Command(
-                    "remove_global_group",
-                    SharingCommands::removeServerGp,
-                    SharingCommands.globalGroupArgument()
-            ),
-            new Command(
-                    "remove_global_waypoint",
-                    SharingCommands::removeServerWp,
-                    SharingCommands.globalWaypointArgument()
-            )
-    );
-
-    public static void register() {
-        commands.forEach((cmd) -> {
-            new CommandAPICommand(cmd.commandName()).withArguments(cmd.arguments()).executesPlayer(cmd.executor()).register();
-        });
-    }
-
-    public static void registerAdmin() {
-
-        CommandAPICommand adminCommandBase = new CommandAPICommand("jmws_admin");
-        adminCommandBase.setPermission(CommandPermission.OP);
-        adminCommands.forEach((cmd) -> {
-            adminCommandBase.withSubcommand(new CommandAPICommand(cmd.commandName()).withPermission(CommandPermission.OP).withArguments(cmd.arguments()).executesPlayer(cmd.executor()));
-        });
-        adminCommandBase.register();
-    }
 
     private static void doGpShareArgPrep(CommandSender commandSender, CommandArguments commandArguments)
     {
@@ -205,5 +138,10 @@ public class SharingCommands {
                 (cssi -> SuggestionProvider.suggestGlobalGroups(cssi.sender().getServer().getPlayer(cssi.sender().getName()).getUniqueId()))
         ));
         return argument;
+    }
+
+    public static GreedyStringArgument greedyStringArgument(String name)
+    {
+        return new GreedyStringArgument(name);
     }
 }

@@ -90,7 +90,6 @@ public class JMWSSponge {
         final Parameter.Value<String> nameParam = Parameter.string().key("name").build();
         event.register(this.container, Command.builder()
             .addParameter(nameParam)
-            .permission("sponge.command.greet")
             .executor(ctx -> {
                 final String name = ctx.requireOne(nameParam);
                 ctx.sendMessage(Identity.nil(), LinearComponents.linear(
@@ -106,8 +105,8 @@ public class JMWSSponge {
     }
 
     public void onPluginMessage(String channel, SpongePlayer spongePlayer, byte[] bytes) {
-        Constants.getLogger().info(channel);
-        Constants.getLogger().info(ActionPacket.CHANNEL);
+        // This could be handled better instead of doing if statements
+        // but there are only two packets anyway and only one that matters on the server
         if (channel.equalsIgnoreCase(ActionPacket.CHANNEL)) {
             new ActionPacket(bytes, spongePlayer).process();
         }

@@ -2,8 +2,8 @@ package me.brynview.navidrohim.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.brynview.navidrohim.common.api.PacketFlow;
-import me.brynview.navidrohim.common.api.WSServer;
+import me.brynview.navidrohim.common.api.network.PacketFlow;
+import me.brynview.navidrohim.common.api.server.WSServer;
 import me.brynview.navidrohim.common.config.ServerConfig;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.common.network.packets.HandshakePacket;

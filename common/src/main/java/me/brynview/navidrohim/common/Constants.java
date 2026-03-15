@@ -1,13 +1,7 @@
 package me.brynview.navidrohim.common;
 
-import me.brynview.navidrohim.common.api.WSPacket;
-import me.brynview.navidrohim.common.api.WSPlayer;
-import me.brynview.navidrohim.common.network.packets.ActionPacket;
-import me.brynview.navidrohim.common.network.packets.HandshakePacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class Constants {
 

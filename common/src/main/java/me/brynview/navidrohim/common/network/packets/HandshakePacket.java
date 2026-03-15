@@ -3,13 +3,10 @@ package me.brynview.navidrohim.common.network.packets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.brynview.navidrohim.common.Constants;
-import me.brynview.navidrohim.common.api.WSPacket;
-import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.api.network.WSPacket;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
 import me.brynview.navidrohim.common.config.ServerConfig;
 import me.brynview.navidrohim.common.network.Utils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 
 public final class HandshakePacket implements WSPacket {
 

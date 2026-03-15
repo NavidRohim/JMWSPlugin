@@ -1,8 +1,8 @@
 package me.brynview.navidrohim.sponge.impl;
 
-import me.brynview.navidrohim.common.api.WSNetworkHandler;
-import me.brynview.navidrohim.common.api.WSPacket;
-import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.api.network.WSNetworkHandler;
+import me.brynview.navidrohim.common.api.network.WSPacket;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
 import me.brynview.navidrohim.common.network.packets.HandshakePacket;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;

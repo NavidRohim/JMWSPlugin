@@ -1,12 +1,9 @@
 package me.brynview.navidrohim.common.network;
 
-import me.brynview.navidrohim.common.CommonClass;
-import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.api.server.WSPlayer;
 import me.brynview.navidrohim.common.enums.JMWSMessageType;
 import me.brynview.navidrohim.common.helper.CommandFactory;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
-
-import java.util.UUID;
 
 public class PlayerNetworkingHelper {
     public static void sendUserMessage(WSPlayer player, String messageKey, Boolean overlay, boolean isError, boolean silent) {
