@@ -15,6 +15,6 @@ public class MessageHandler implements RawPlayDataHandler<EngineConnectionState.
 
     @Override
     public void handlePayload(ChannelBuf data, EngineConnectionState.Game state) {
-        JMWSSponge.getPlugin().onPluginMessage(channel, new SpongePlayer((ServerPlayer) state.player()), data.readBytes(data.capacity()));
+        JMWSSponge.getPlugin().plugin().onPluginMessage(channel, new SpongePlayer((ServerPlayer) state.player()), data.readBytes(data.capacity()));
     }
 }

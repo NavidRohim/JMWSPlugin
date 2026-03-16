@@ -14,7 +14,7 @@ public class SpongeNetworkHandler implements WSNetworkHandler {
     public final ServerPlayer playerObj;
     public final WSPlayer wsPlayer;
 
-    SpongeNetworkHandler(ServerPlayer player, WSPlayer wsPlayer)
+    public SpongeNetworkHandler(ServerPlayer player, WSPlayer wsPlayer)
     {
         this.playerObj = player;
         this.wsPlayer = wsPlayer;
