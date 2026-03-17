@@ -1,8 +1,14 @@
 package me.brynview.navidrohim.common.enums;
 
+import me.brynview.navidrohim.common.io.JMWSServerIO;
 import me.brynview.navidrohim.common.objects.ServerGroup;
 import me.brynview.navidrohim.common.objects.ServerObject;
 import me.brynview.navidrohim.common.objects.ServerWaypoint;
+
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.UUID;
 
 public enum ObjectType {
     WAYPOINT(ServerWaypoint.class, "./jmws/"),
@@ -30,5 +36,17 @@ public enum ObjectType {
     public String getObjectPathPrefix()
     {
         return this.objectPathPrefix;
+    }
+
+    public <T extends ServerObject> Optional<T> getServerObject(String nonDuplicateIdentifier, UUID senderUUID)
+    {
+        HashMap<String, Path> userObjPaths = JMWSServerIO.getNameHashmapLookup(senderUUID, this);
+        Path specifiedObj = userObjPaths.get(nonDuplicateIdentifier);
+
+        if (specifiedObj != null) {
+            return Optional.of(JMWSServerIO.getObjectFromFile(specifiedObj, senderUUID, this));
+        } else {
+            return Optional.empty();
+        }
     }
 }

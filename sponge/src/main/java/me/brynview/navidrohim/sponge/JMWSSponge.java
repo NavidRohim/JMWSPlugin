@@ -3,9 +3,13 @@ package me.brynview.navidrohim.sponge;
 import com.google.inject.Inject;
 import me.brynview.navidrohim.common.CommonClass;
 import me.brynview.navidrohim.common.Constants;
+import me.brynview.navidrohim.common.api.commands.ArgumentTypes;
 import me.brynview.navidrohim.common.events.CommonEvents;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.sponge.commands.SpongeCommands;
+import me.brynview.navidrohim.sponge.commands.impl.GroupCommandCommonEncoder;
+import me.brynview.navidrohim.sponge.commands.impl.PlayerCommandCommonEncoder;
+import me.brynview.navidrohim.sponge.commands.impl.WaypointCommandCommonEncoder;
 import me.brynview.navidrohim.sponge.impl.PluginMetadata;
 import me.brynview.navidrohim.sponge.impl.game.SpongePlayer;
 import me.brynview.navidrohim.sponge.impl.game.SpongeServer;
@@ -36,7 +40,6 @@ public class JMWSSponge {
     @Inject
     JMWSSponge(final PluginContainer container) {
         this.logger = Constants.getLogger();
-
         JMWSSponge.instance = this;
         JMWSSponge.pluginMetadata = new PluginMetadata(JMWSSponge.instance, container);
     }
@@ -80,14 +83,21 @@ public class JMWSSponge {
 
     @Listener
     public void onRegisterCommands(final RegisterCommandEvent<Command.Parameterized> event) {
+        SpongeCommands.registerArgument(ArgumentTypes.WAYPOINT, new  WaypointCommandCommonEncoder());
+        SpongeCommands.registerArgument(ArgumentTypes.GROUP, new  GroupCommandCommonEncoder());
+        SpongeCommands.registerArgument(ArgumentTypes.PLAYER, new  PlayerCommandCommonEncoder());
+
         CommonClass.COMMON_COMMANDS.forEach(command -> {
             SpongeCommands.registerCommand(command, event);});
 
     }
 
     public void onPluginMessage(String channel, SpongePlayer spongePlayer, byte[] bytes) {
+
         if (channel.equalsIgnoreCase(ActionPacket.CHANNEL)) {
             new ActionPacket(bytes, spongePlayer).process();
         }
     }
+
+
 }

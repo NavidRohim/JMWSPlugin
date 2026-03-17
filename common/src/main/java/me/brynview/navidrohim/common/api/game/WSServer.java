@@ -12,4 +12,5 @@ public interface WSServer {
 
     WSPlayer getWSPlayer(UUID uuid);
     WSPlayer getWSPlayer(String name);
+    void teleportPlayer(UUID uuid, int x, int y, int z);
 }

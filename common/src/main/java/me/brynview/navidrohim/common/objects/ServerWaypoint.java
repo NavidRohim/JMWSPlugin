@@ -1,6 +1,7 @@
 package me.brynview.navidrohim.common.objects;
 
 import com.google.gson.JsonObject;
+import me.brynview.navidrohim.common.CommonClass;
 import me.brynview.navidrohim.common.enums.ObjectType;
 import me.brynview.navidrohim.common.io.JMWSServerIO;
 import org.jetbrains.annotations.Nullable;
@@ -74,4 +75,14 @@ public class ServerWaypoint extends ServerObject {
         return objectType;
     }
 
+    @Override
+    public String toString()
+    {
+        return "<%s name=%s, isGlobal=%s>".formatted(this.getClass().getSimpleName(), this.name, this.syncing.isGlobal());
+    }
+
+    public void teleport()
+    {
+        CommonClass.server.teleportPlayer(this.ownerUUID, this.x, this.y, this.z);
+    }
 }

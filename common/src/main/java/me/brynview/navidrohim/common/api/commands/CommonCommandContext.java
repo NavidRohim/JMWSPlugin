@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public record CommonCommandContext(HashMap<String, ?> arguments, WSPlayer commandSender)
+public record CommonCommandContext(HashMap<String, Optional<?>> arguments, WSPlayer commandSender)
 {
-    @Nullable
-    public <T> T getArgumentAsType(String key, Class<T> clazz) {
-        Object value = arguments.get(key);
+    public <T> Optional<T> getArgumentAsType(String key, Class<T> clazz) {
+        Optional<?> value = arguments.get(key);
 
-        if (clazz.isInstance(value)) {
-            return clazz.cast(value);
+        if (value.isPresent()) {
+            Object valueObj = value.get();
+            return Optional.of(clazz.cast(valueObj));
         }
 
-        return null;
+        return Optional.empty();
     }
 }

@@ -119,4 +119,10 @@ public class ServerGroup extends ServerObject {
     {
         return getGroupFromFile(JMWSServerIO.getObjectPathFromUniqueIdentifier(groupIdentifier, ObjectType.GROUP), user, true);
     }
+
+    @Override
+    public String toString()
+    {
+        return "<%s name=%s, isGlobal=%s>".formatted(this.getClass().getName(), this.name, this.syncing.isGlobal());
+    }
 }

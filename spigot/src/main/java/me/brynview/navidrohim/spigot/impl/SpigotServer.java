@@ -5,7 +5,9 @@ import me.brynview.navidrohim.common.api.networking.PacketFlow;
 import me.brynview.navidrohim.common.api.game.WSPlayer;
 import me.brynview.navidrohim.common.api.game.WSServer;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
+import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.Messenger;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,6 +67,12 @@ public class SpigotServer implements WSServer {
     @Nullable
     public WSPlayer getWSPlayer(String name) {
         return new SpigotPlayer(this.getNativeServer().getPlayerExact(name));
+    }
+
+    @Override
+    public void teleportPlayer(UUID uuid, int x, int y, int z) {
+        Player player = server.getPlayer(uuid);
+        player.teleport(new Location(player.getWorld(), x, y, z));
     }
 
     public Server getNativeServer()

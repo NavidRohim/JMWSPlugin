@@ -9,9 +9,11 @@ import me.brynview.navidrohim.sponge.MessageHandler;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.network.EngineConnectionState;
 import org.spongepowered.api.network.channel.raw.RawDataChannel;
+import org.spongepowered.math.vector.Vector3d;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -79,5 +81,11 @@ public class SpongeServer implements WSServer {
     public WSPlayer getWSPlayer(String name) {
         Optional<ServerPlayer> serverPlayer = SpongeServer.nativeServer.player(name);
         return new SpongePlayer(serverPlayer.get());
+    }
+
+    @Override
+    public void teleportPlayer(UUID uuid, int x, int y, int z) {
+        Optional<ServerPlayer> player = nativeServer.player(uuid);
+        player.get().setPosition(new Vector3d(x, y, z));
     }
 }

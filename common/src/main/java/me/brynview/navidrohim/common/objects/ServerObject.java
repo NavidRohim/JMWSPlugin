@@ -268,6 +268,7 @@ public class ServerObject extends LegacyObject implements PossessesIdentifier {
     {
         return ownerUUID;
     }
+
     @Override
     public String toString()
     {

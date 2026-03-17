@@ -6,6 +6,7 @@ import me.brynview.navidrohim.common.api.commands.Argument;
 import me.brynview.navidrohim.common.api.commands.ArgumentTypes;
 import me.brynview.navidrohim.common.api.commands.CommonCommand;
 import me.brynview.navidrohim.common.api.commands.CommonCommandContext;
+import me.brynview.navidrohim.common.api.game.WSPlayer;
 import me.brynview.navidrohim.common.api.networking.PacketFlow;
 import me.brynview.navidrohim.common.api.game.WSServer;
 import me.brynview.navidrohim.common.config.ServerConfig;
@@ -15,6 +16,7 @@ import me.brynview.navidrohim.common.objects.ServerWaypoint;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
 // common compatible binaries. This means common code can not directly use loader specific concepts such as Forge events
@@ -29,12 +31,12 @@ public class CommonClass {
     public static final Gson gsonExcludeNoExpose = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     public static WSServer server;
 
-    public static final List<CommonCommand> COMMON_COMMANDS = List.of(new CommonCommand("plant", 0, CommonClass::test, new Argument("tree", ArgumentTypes.WAYPOINT))
+    public static final List<CommonCommand> COMMON_COMMANDS = List.of(new CommonCommand("argtest", 0, CommonClass::test, new Argument("tree", ArgumentTypes.PLAYER))
     );
 
     private static void test(CommonCommandContext ctx) {
-        Constants.getLogger().info("TESTING COM");
-        ctx.getArgumentAsType("waypointName", ServerWaypoint.class);
+        Optional<WSPlayer> serverWaypoint = ctx.getArgumentAsType("tree", WSPlayer.class);
+        serverWaypoint.ifPresent(a -> {Constants.getLogger().info(a.getName());});
     }
 
     public static void _createServerResources() {
