@@ -69,12 +69,6 @@ public class SpigotServer implements WSServer {
         return new SpigotPlayer(this.getNativeServer().getPlayerExact(name));
     }
 
-    @Override
-    public void teleportPlayer(UUID uuid, int x, int y, int z) {
-        Player player = server.getPlayer(uuid);
-        player.teleport(new Location(player.getWorld(), x, y, z));
-    }
-
     public Server getNativeServer()
     {
         return server;

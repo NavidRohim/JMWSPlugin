@@ -26,9 +26,9 @@ public final class JMWSSpigot extends JavaPlugin implements PluginMessageListene
     public void onLoad() {
 
         CommandAPI.onLoad(new CommandAPISpigotConfig(this));
-
+        /*
         SharingCommands.register();
-        SharingCommands.registerAdmin();
+        SharingCommands.registerAdmin();*/
     }
 
     @Override

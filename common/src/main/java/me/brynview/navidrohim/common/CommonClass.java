@@ -33,16 +33,34 @@ public class CommonClass {
     public static WSServer server;
 
     public static final List<CommonCommand> COMMON_COMMANDS = List.of(
-            new CommonCommand("share_waypoint", 0, ServerCommands::share,
-                    new Argument("sender", ArgumentTypes.PLAYER),
+            new CommonCommand("share_waypoint", false, ServerCommands::share,
                     new Argument("player", ArgumentTypes.PLAYER),
                     new Argument("waypoint", ArgumentTypes.WAYPOINT)
             ),
-            new CommonCommand("share_group", 0, ServerCommands::shareGroup,
-                    new Argument("sender", ArgumentTypes.PLAYER),
+            new CommonCommand("share_group", false, ServerCommands::shareGroup,
                     new Argument("player", ArgumentTypes.PLAYER),
                     new Argument("group", ArgumentTypes.GROUP)
+            ),
+            new CommonCommand("stop_sharing_group", false, ServerCommands::removeShareGroup,
+                    new Argument("group", ArgumentTypes.GROUP)
+            ),
+            new CommonCommand("stop_sharing_waypoint", false, ServerCommands::removeShareWaypoint,
+                    new Argument("waypoint", ArgumentTypes.WAYPOINT)
+            ),
+
+            new CommonCommand("create_global_waypoint", true, ServerCommands::globalWaypoint,
+                    new Argument("waypoint", ArgumentTypes.WAYPOINT)
+            ),
+            new CommonCommand("create_global_group", true, ServerCommands::globalGroup,
+                    new Argument("group", ArgumentTypes.GROUP)
+            ),
+            new CommonCommand("remove_global_waypoint", true, ServerCommands::nonGlobalWaypoint,
+                    new Argument("waypoint", ArgumentTypes.WAYPOINT)
+            ),
+            new CommonCommand("remove_global_group", true, ServerCommands::nonGlobalGroup,
+                    new Argument("group", ArgumentTypes.GROUP)
             )
+
     );
 
     public static void _createServerResources() {

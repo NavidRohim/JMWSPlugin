@@ -48,15 +48,15 @@ public record CommonCommandContext(HashMap<String, Optional<?>> arguments, WSPla
         return getArgumentAsRequired(key, WSPlayer.class, "Could not find player for key: " + key);
     }
 
-    public Optional<WSPlayer> getPlayerOptional(String key) throws CommandException {
+    public Optional<WSPlayer> getPlayerOptional(String key) {
         return getArgumentAsType(key, WSPlayer.class);
     }
 
-    public Optional<ServerWaypoint> getWaypointOptional(String key) throws CommandException {
+    public Optional<ServerWaypoint> getWaypointOptional(String key) {
         return getArgumentAsType(key, ServerWaypoint.class);
     }
 
-    public Optional<ServerGroup> getGroupOptional(String key) throws CommandException {
+    public Optional<ServerGroup> getGroupOptional(String key) {
         return getArgumentAsType(key, ServerGroup.class);
     }
 }

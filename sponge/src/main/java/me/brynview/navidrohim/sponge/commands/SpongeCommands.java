@@ -7,54 +7,24 @@ import me.brynview.navidrohim.common.api.commands.ArgumentTypes;
 import me.brynview.navidrohim.common.api.commands.CommonCommand;
 import me.brynview.navidrohim.common.api.commands.CommonCommandContext;
 import me.brynview.navidrohim.common.api.game.WSPlayer;
-import me.brynview.navidrohim.common.commands.SuggestionProvider;
-import me.brynview.navidrohim.common.enums.ObjectType;
-import me.brynview.navidrohim.common.objects.ServerGroup;
-import me.brynview.navidrohim.common.objects.ServerWaypoint;
 import me.brynview.navidrohim.sponge.JMWSSponge;
 import me.brynview.navidrohim.sponge.commands.api.SpongeArgumentType;
 import me.brynview.navidrohim.sponge.commands.api.SpongeCommandCommonEncoder;
-import me.brynview.navidrohim.sponge.commands.impl.GroupCommandCommonEncoder;
-import me.brynview.navidrohim.sponge.commands.impl.PlayerCommandCommonEncoder;
-import me.brynview.navidrohim.sponge.commands.impl.WaypointCommandCommonEncoder;
-import me.brynview.navidrohim.sponge.impl.game.SpongePlayer;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.api.command.Command;
-import org.spongepowered.api.command.CommandCompletion;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.CommandContext;
 import org.spongepowered.api.command.parameter.Parameter;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.lifecycle.RegisterCommandEvent;
 
 import java.util.*;
-import java.util.function.BiFunction;
 
 public class SpongeCommands {
 
     private static final Map<ArgumentTypes, SpongeCommandCommonEncoder> ARGUMENT_TYPES_TO_ENCODERS = new HashMap<>();
     private static final Map<String, CommonCommand> COMMAND_NAME_TO_OBJ_MAP = new HashMap<>();
     private static final Map<String, Parameter.Key<?>> PARAM_KEYS = new HashMap<>();
-
-    public static Parameter.Value.Builder<String> withCompletionListOf(ObjectType completionType) {
-        return Parameter.remainingJoinedStrings().completer((context, currentInput) -> {
-            Optional<UUID> UUID = context.cause().audience().get(Identity.UUID);
-            List<CommandCompletion> completions = new ArrayList<>();
-
-            // UUID won't be present if the user is a console or anything without a UUID
-            if (UUID.isPresent()) {
-                List<String> waypoints = completionType == ObjectType.WAYPOINT ? SuggestionProvider.suggestWaypoints(UUID.get()) : SuggestionProvider.suggestGroups(UUID.get());
-
-                waypoints.forEach(wpString -> {
-                    if (wpString.contains(currentInput)) {
-                        completions.add(CommandCompletion.of(wpString));
-                    }
-                });
-            }
-            return completions;
-        });
-    }
 
     public static void registerCommand(CommonCommand commonCommand, final RegisterCommandEvent<Command.Parameterized> event)
     {
@@ -69,10 +39,16 @@ public class SpongeCommands {
             params.add(param.parameter());
         }
 
-        Command.Parameterized nativeCommand = Command.builder().addParameters(params).executor((executor) -> {
+        Command.Builder nativeCommand = Command.builder().addParameters(params).executor((executor) -> {
             return SpongeCommands.executeCommand(executor, commonCommand.commandName());
-        }).build();
-        event.register(JMWSSponge.getPlugin().container(), nativeCommand, commonCommand.commandName());
+        });
+
+        if (commonCommand.opOnly())
+        {
+            nativeCommand.permission("minecraft.command.op");
+        }
+
+        event.register(JMWSSponge.getPlugin().container(), nativeCommand.build(), commonCommand.commandName());
         COMMAND_NAME_TO_OBJ_MAP.put(commonCommand.commandName(), commonCommand);
     }
 

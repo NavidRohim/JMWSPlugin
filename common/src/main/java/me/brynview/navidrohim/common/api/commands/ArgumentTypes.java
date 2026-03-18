@@ -15,7 +15,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public enum ArgumentTypes {
+
+    SHARED_WAYPOINT,
+    GLOBAL_WAYPOINT,
     WAYPOINT,
+
+    SHARED_GROUP,
+    GLOBAL_GROUP,
     GROUP,
+
     PLAYER
 }

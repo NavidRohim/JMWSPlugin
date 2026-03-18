@@ -51,13 +51,13 @@ public class ServerCommands {
 
         try
         {
-            WSPlayer sender = ctx.getPlayer("sender");
+            WSPlayer sender = ctx.commandSender();
             WSPlayer player = ctx.getPlayer("player");
             Optional<ServerWaypoint> waypoint = ctx.getWaypointOptional("waypoint");
 
             shareAny(sender, player, waypoint);
         } catch (CommandException e) {
-            Constants.getLogger().info("Failed to execute share command, error message: " + e.getMessage());
+            Constants.getLogger().info("Failed to execute command, error message: " + e.getMessage());
         }
     }
 
@@ -65,56 +65,84 @@ public class ServerCommands {
 
         try
         {
-            WSPlayer sender = ctx.getPlayer("sender");
+            WSPlayer sender = ctx.commandSender();
             WSPlayer player = ctx.getPlayer("player");
             Optional<ServerGroup> group = ctx.getGroupOptional("waypoint");
 
             shareAny(sender, player, group);
         } catch (CommandException e) {
-            Constants.getLogger().info("Failed to execute share command, error message: " + e.getMessage());
+            Constants.getLogger().info("Failed to execute command, error message: " + e.getMessage());
         }
     }
 
-    public static int removeShare(WSPlayer sender, String waypointID, ObjectType objectType) {
-        HashMap<String, Path> userObjPaths = JMWSServerIO.getNameHashmapLookup(sender.getUUID(), objectType);
-        Path specifiedObj = userObjPaths.get(waypointID);
-
-        if (specifiedObj != null)
+    private static void removeShareFromShareable(WSPlayer sender, Optional<? extends ServerObject> shareableObject)
+    {
+        if (shareableObject.isPresent())
         {
-            ServerObject objIns = JMWSServerIO.getObjectFromFile(specifiedObj, sender.getUUID(), objectType);
+            ServerObject objIns = shareableObject.get();
             objIns.stopSharing();
             PlayerNetworkingHelper.sendUserMessage(sender, "sharing.jmws.stopped_sharing", true, JMWSMessageType.NEUTRAL);
         }
         else {
             PlayerNetworkingHelper.sendUserMessage(sender, "sharing.jmws.no_matching_object", true, JMWSMessageType.FAILURE);
         }
-
-        return 1;
     }
 
-    public static void globalShare(String objectName, WSPlayer player, ObjectType objectType, boolean make)
-    {
-        HashMap<String, Path> userObjs = JMWSServerIO.getNameHashmapLookup(player.getUUID(), objectType);
-        @Nullable Path specifiedObject = userObjs.get(objectName);
-        ServerObject globalObject = JMWSServerIO.getObjectFromFile(specifiedObject, player.getUUID(), objectType);
+    public static void removeShareWaypoint(CommonCommandContext ctx) {
+        WSPlayer sender = ctx.commandSender();
+        Optional<ServerWaypoint> waypoint = ctx.getWaypointOptional("waypoint");
 
-        if (specifiedObject != null && globalObject != null)
+        removeShareFromShareable(sender, waypoint);
+    }
+
+    public static void removeShareGroup(CommonCommandContext ctx) {
+        WSPlayer sender = ctx.commandSender();
+        Optional<ServerGroup> group = ctx.getGroupOptional("group");
+
+        removeShareFromShareable(sender, group);
+    }
+
+    private static void makeShareableObjectGlobal(WSPlayer sender, Optional<? extends ServerObject> shareableObject)
+    {
+        if (shareableObject.isPresent())
         {
-            if (make)
+            shareableObject.get().makeGlobal();
+            PlayerNetworkingHelper.sendUserMessage(sender, "global.jmws.made_global", true, JMWSMessageType.NEUTRAL);
+        } else {
+            PlayerNetworkingHelper.sendUserMessage(sender, "sharing.jmws.no_matching_object", true, JMWSMessageType.FAILURE);
+        }
+    }
+
+    private static void makeShareableObjectNonGlobal(WSPlayer sender, Optional<? extends ServerObject> shareableObject)
+    {
+        if (shareableObject.isPresent())
+        {
+            ServerObject globalObject = shareableObject.get();
+            if (globalObject.syncing.isGlobal())
             {
-                globalObject.makeGlobal();
-                PlayerNetworkingHelper.sendUserMessage(player, "global.jmws.made_global", true, JMWSMessageType.NEUTRAL);
+                globalObject.removeGlobal();
+                PlayerNetworkingHelper.sendUserMessage(sender, "global.jmws.remove_global", true, JMWSMessageType.NEUTRAL);
             } else {
-                if (globalObject.syncing.isGlobal())
-                {
-                    globalObject.removeGlobal();
-                    PlayerNetworkingHelper.sendUserMessage(player, "global.jmws.remove_global", true, JMWSMessageType.NEUTRAL);
-                } else {
-                    PlayerNetworkingHelper.sendUserMessage(player, "global.jmws.not_global", true, JMWSMessageType.NEUTRAL);
-                }
+                PlayerNetworkingHelper.sendUserMessage(sender, "global.jmws.not_global", true, JMWSMessageType.NEUTRAL);
             }
         } else {
-            PlayerNetworkingHelper.sendUserMessage(player, "sharing.jmws.no_matching_object", true, JMWSMessageType.FAILURE);
+            PlayerNetworkingHelper.sendUserMessage(sender, "sharing.jmws.no_matching_object", true, JMWSMessageType.FAILURE);
         }
+    }
+
+    public static void globalWaypoint(CommonCommandContext ctx) {
+        makeShareableObjectGlobal(ctx.commandSender(), ctx.getWaypointOptional("waypoint"));
+    }
+
+    public static void globalGroup(CommonCommandContext ctx) {
+        makeShareableObjectGlobal(ctx.commandSender(), ctx.getGroupOptional("group"));
+    }
+
+    public static void nonGlobalWaypoint(CommonCommandContext ctx) {
+        makeShareableObjectNonGlobal(ctx.commandSender(), ctx.getWaypointOptional("waypoint"));
+    }
+
+    public static void nonGlobalGroup(CommonCommandContext ctx) {
+        makeShareableObjectNonGlobal(ctx.commandSender(), ctx.getGroupOptional("group"));
     }
 }

@@ -9,6 +9,7 @@ import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.sponge.commands.SpongeCommands;
 import me.brynview.navidrohim.sponge.commands.impl.GroupCommandCommonEncoder;
 import me.brynview.navidrohim.sponge.commands.impl.PlayerCommandCommonEncoder;
+import me.brynview.navidrohim.sponge.commands.impl.SharedWaypointCommandCommonEncoder;
 import me.brynview.navidrohim.sponge.commands.impl.WaypointCommandCommonEncoder;
 import me.brynview.navidrohim.sponge.impl.PluginMetadata;
 import me.brynview.navidrohim.sponge.impl.game.SpongePlayer;
@@ -99,7 +100,13 @@ public class JMWSSponge {
         * Register the class you made here with the new ArgumentType and an instance of your encoder.
         * */
         SpongeCommands.registerArgument(ArgumentTypes.WAYPOINT, new WaypointCommandCommonEncoder());
+        SpongeCommands.registerArgument(ArgumentTypes.SHARED_WAYPOINT, new SharedWaypointCommandCommonEncoder());
+        SpongeCommands.registerArgument(ArgumentTypes.GLOBAL_GROUP, new SharedWaypointCommandCommonEncoder());
+
         SpongeCommands.registerArgument(ArgumentTypes.GROUP, new GroupCommandCommonEncoder());
+        SpongeCommands.registerArgument(ArgumentTypes.SHARED_GROUP, new GroupCommandCommonEncoder());
+        SpongeCommands.registerArgument(ArgumentTypes.GLOBAL_GROUP, new GroupCommandCommonEncoder());
+
         SpongeCommands.registerArgument(ArgumentTypes.PLAYER, new PlayerCommandCommonEncoder());
 
         CommonClass.COMMON_COMMANDS.forEach(command -> {
