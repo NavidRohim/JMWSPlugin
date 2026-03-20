@@ -47,7 +47,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [version: version, jmws_description: jmws_description, jmws_version: jmws_version]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {

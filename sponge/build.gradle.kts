@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "me.brynview.navidrohim"
-version = "1.2.3-1.21.11-alpha.2"
+version = "1.2.4-1.21.11-alpha.2"
 
 repositories {
     mavenCentral()
