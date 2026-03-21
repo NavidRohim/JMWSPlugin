@@ -4,6 +4,11 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 import me.brynview.navidrohim.common.CommonClass;
+import me.brynview.navidrohim.common.Constants;
+import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.enums.JMWSMessageType;
+import me.brynview.navidrohim.common.network.PlayerNetworkingHelper;
+import me.brynview.navidrohim.common.network.ServerPacketHandler;
 import me.brynview.navidrohim.common.objects.ServerObject;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,27 +46,11 @@ public class SyncingInformation {
 
             return syncingInformation;
         } catch (IllegalStateException | JsonSyntaxException reader) {
-            //PlayerNetworkingHelper.sendUserMessage(object.getOwnerUUID(), "FATAL: You are on the wrong JMWS version! Update to JMWS v%s as soon as possible or you may suffer data loss!".formatted(Constants.SERVER_VERSION), false, JMWSMessageType.FAILURE); // TODO: PACKET
+            PlayerNetworkingHelper.sendUserMessage(object.getOwnerUUID(), "FATAL: You are on the wrong JMWS version! Update to JMWS v%s as soon as possible or you may suffer data loss!".formatted(Constants.SERVER_VERSION), false, JMWSMessageType.FAILURE);
             object.dataclass = true;
 
             return null;
         }
-    }
-
-    public static SyncingInformation getSyncingInfo(String customDataField, boolean returnNullIfError) {
-        try {
-            return CommonClass.gson.fromJson(customDataField, SyncingInformation.class);
-        } catch (JsonSyntaxException syntaxException) // will throw if object hasn't been ported.
-        {
-            if (!returnNullIfError) {
-                //return getSyncingInfo(getEmptySyncingInfoString(customDataField, PlayerHelper.ourUUID(), false));// TODO: URGENT FIX
-            }
-            return null;
-        }
-    }
-
-    public static SyncingInformation getSyncingInfo(String customDataField) {
-        return getSyncingInfo(customDataField, false);
     }
 
     public static String getEmptySyncingInfoString(String objectIdentifier, UUID owner, boolean isGlobal) {
@@ -108,11 +97,11 @@ public class SyncingInformation {
 
     public void syncToUsers() {
         for (String playerUUID : this.sharedTo) {
-            // Player sharedUser = CommonClass.getMinecraftServerInstance().getPlayer(UUID.fromString(playerUUID)); // TODO: USE API
+            WSPlayer sharedUser = CommonClass.server.getWSPlayer(UUID.fromString(playerUUID));
 
-            //if (sharedUser != null) {
-                //ServerPacketHandler.sendUserSync(sharedUser, false, false, true); // TODO: PACKET
-            //}
+            if (sharedUser != null) {
+                ServerPacketHandler.sendUserSync(sharedUser, false, false, true);
+            }
         }
     }
 }

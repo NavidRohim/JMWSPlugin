@@ -5,11 +5,13 @@ import com.google.gson.JsonParser;
 import me.brynview.navidrohim.common.CommonClass;
 import me.brynview.navidrohim.common.Constants;
 import me.brynview.navidrohim.common.api.WSPlayer;
+import me.brynview.navidrohim.common.enums.JMWSMessageType;
 import me.brynview.navidrohim.common.enums.ObjectType;
 import me.brynview.navidrohim.common.helper.CommandFactory;
 import me.brynview.navidrohim.common.helper.CommonHelper;
 import me.brynview.navidrohim.common.io.JMWSServerIO;
 import me.brynview.navidrohim.common.io.UserSharingFile;
+import me.brynview.navidrohim.common.network.PlayerNetworkingHelper;
 import me.brynview.navidrohim.common.network.packets.ActionPacket;
 import me.brynview.navidrohim.common.syncing.SyncingInformation;
 import org.jetbrains.annotations.Nullable;
@@ -130,17 +132,17 @@ public class ServerObject extends LegacyObject implements PossessesIdentifier {
     public void removeObjectFromUser(UUID playerUUID, String objectIdentifier)
     {
         UserSharingFile.removeObjectFromUser(playerUUID, objectIdentifier, getObjectType());
-        //Player sharedPlayer = JMWSSpigot.server.getPlayer(playerUUID); // TODO: use api
-        //if (sharedPlayer != null)
+        WSPlayer sharedPlayer = CommonClass.server.getWSPlayer(playerUUID);
+        if (sharedPlayer != null)
         {
+            ActionPacket packet;
             if (this.getObjectType() == ObjectType.WAYPOINT)
             {
-                // TODO: PACKET
-                //Dispatcher.sendToClient(new JMWSActionPayload(CommandFactory.makeDeleteRequestJson(objectIdentifier, true, false)), sharedPlayer);
+                packet = new ActionPacket(CommandFactory.makeDeleteRequestJson(objectIdentifier, true, false), sharedPlayer);
             } else {
-                // TODO: PACKET
-                //Dispatcher.sendToClient(new JMWSActionPayload(CommandFactory.makeDeleteGroupRequestJson(this.syncing.objectIdentifier, null, true, true, true, false, false)), sharedPlayer);
+                packet = new ActionPacket(CommandFactory.makeDeleteGroupRequestJson(objectIdentifier, null, true, true, true, false, false), sharedPlayer);
             }
+            packet.send();
         }
     }
 
@@ -224,7 +226,7 @@ public class ServerObject extends LegacyObject implements PossessesIdentifier {
 
                     return true;
                 } else {
-                    // PlayerNetworkingHelper.sendUserMessage(this.ownerUUID, "error.jmws.invalid_name", false, JMWSMessageType.FAILURE); TODO: PACKET
+                    PlayerNetworkingHelper.sendUserMessage(this.ownerUUID, "error.jmws.invalid_name", false, JMWSMessageType.FAILURE);
                     return false;
                 }
 

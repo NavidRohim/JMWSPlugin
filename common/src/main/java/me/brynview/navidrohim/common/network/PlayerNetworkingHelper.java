@@ -26,9 +26,9 @@ public class PlayerNetworkingHelper {
         new ActionPacket(CommandFactory.makeClientAlertRequestJson(messageKey, overlay, messageType), player).send();
     }
 
-    /* Will need server layer for this
+     //Will need server layer for this
     public static void sendUserMessage(UUID player, String messageKey, Boolean overlay, JMWSMessageType messageType) {
-        JMWSActionPayload messagePayload = new JMWSActionPayload(CommandFactory.makeClientAlertRequestJson(messageKey, overlay, messageType));
-        Dispatcher.sendToClient(messagePayload, CommonClass.getMinecraftServerInstance().getPlayerList().getPlayer(player));
-    }*/
+        ActionPacket messagePacket = new ActionPacket(CommandFactory.makeClientAlertRequestJson(messageKey, overlay, messageType), CommonClass.server.getWSPlayer(player));
+        messagePacket.send();
+    }
 }

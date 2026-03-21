@@ -26,6 +26,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+// I kinda hate this class. Any class that handles commands. I wish it was like normal JMWS
+// Where the platform just provides a dispatcher from Brigadier, and then it sorts itself in common code
 public class SpongeCommands {
 
     // Argument completers
@@ -196,7 +198,7 @@ public class SpongeCommands {
         Optional<UUID> senderUUID = commandContext.cause().audience().get(Identity.UUID);
         if (senderUUID.isPresent()) {
             WSPlayer commandSender = CommonClass.server.getWSPlayer(senderUUID.get());
-            String identifier = commandContext.requireOne(waypointParameter);
+            String identifier = commandContext.requireOne(sharedWaypointParameter);
 
             ServerCommands.removeShare(commandSender, identifier, ObjectType.WAYPOINT);
 
@@ -211,7 +213,7 @@ public class SpongeCommands {
         Optional<UUID> senderUUID = commandContext.cause().audience().get(Identity.UUID);
         if (senderUUID.isPresent()) {
             WSPlayer commandSender = CommonClass.server.getWSPlayer(senderUUID.get());
-            String identifier = commandContext.requireOne(waypointParameter);
+            String identifier = commandContext.requireOne(sharedGroupParameter);
 
             ServerCommands.removeShare(commandSender, identifier, ObjectType.GROUP);
 

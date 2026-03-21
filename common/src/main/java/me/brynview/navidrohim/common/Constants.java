@@ -21,7 +21,7 @@ public class Constants {
 
     public static final String MODID = "jmws";
     public static final String VERSION = "1.2.4-1.21.11-alpha.2"; // This is purely for display and is not needed
-    public static final double SERVER_VERSION = 1.102;
+    public static final double SERVER_VERSION = 1.103;
     public static final boolean DEBUG = VERSION.contains("-beta.") || VERSION.contains("-alpha.");
 
     public static final int PACKET_SIZE = 2_097_000;

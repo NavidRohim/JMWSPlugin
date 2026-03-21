@@ -71,6 +71,7 @@ public class SpongeServer implements WSServer {
 
     @Override
     public WSPlayer getWSPlayer(UUID uuid) {
+        // TODO: Worried about null safety because of the blind call to get()
         Optional<ServerPlayer> serverPlayer = SpongeServer.nativeServer.player(uuid);
         return new SpongePlayer(serverPlayer.get());
     }
